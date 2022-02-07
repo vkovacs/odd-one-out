@@ -2,7 +2,7 @@ package hu.crs.exerciser
 
 class Application {
 
-    public static final int MAX_VALUE = 20
+    public static final int MAX_VALUE = 10
 
     static void main(String[] args) {
         List<Character> operators = ['+', '-'] as List<Character>
@@ -14,7 +14,11 @@ class Application {
             def operand1 = random.nextInt(MAX_VALUE)
             def operator = operators[random.nextInt(operators.size())]
 
-            def expression = "${operand0.toString().padLeft(3)} ${operator.toString().padLeft(1)} ${operand1.toString().padLeft(3)}"
+            def operand0Padded = operand0.toString().padLeft(3)
+            def operatorPadded = operator.toString().padLeft(1)
+            def operator1Padded = operand1.toString().padLeft(3)
+
+            def expression = "${operand0Padded} ${operatorPadded} ${operator1Padded}"
             int result = Eval.me(expression) as int
             if (!results.contains(result)) {
                 results << result
