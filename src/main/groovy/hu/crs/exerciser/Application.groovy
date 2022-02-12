@@ -10,9 +10,12 @@ class Application {
 
     static void main(String[] args) {
 
-        5.times {
-            println exercise()
+        List<Exercise> exercises = []
+        10.times {
+            exercises << exercise()
         }
+
+        toCsv(new File("build/tmp/exercises.csv"), exercises)
     }
 
     private static Exercise exercise() {
@@ -24,10 +27,9 @@ class Application {
             def operand1 = random.nextInt(MAX_VALUE)
             def operator = operators[random.nextInt(operators.size())]
             def expression = "${operand0} ${operator} ${operand1}".toString()
-            expressions << expression
-
             int result = Eval.me(expression) as int
             if (!results.contains(result)) {
+                expressions << expression
                 results << result
             }
         }
@@ -37,10 +39,36 @@ class Application {
             oddOneOut = random.nextInt(MAX_VALUE * 3)
         }
 
-        def possibleResults = results.toList().shuffled().collect()
+        def possibleResults = [] << oddOneOut
+        possibleResults.addAll(results.toList())
+        possibleResults = possibleResults.shuffled().collect()
 
         return new Exercise(expressions: expressions, possibleResults: possibleResults)
-   }
+    }
+
+    static void toCsv(File file, List<Exercise> exercises) {
+        file.write("")
+        String line = ""
+        exercises[0].expressions.size().times { i ->
+            line = exercises
+                    .collect { exercise ->
+                        exercise.expressions[i]
+                    }
+                    .join(",,")
+            file.append(line + "\n")
+        }
+
+        file.append("\n")
+
+        exercises[0].possibleResults.size().times { i ->
+            line = exercises
+                    .collect { exercise ->
+                        exercise.possibleResults[i]
+                    }
+                    .join(",,")
+            file.append(line + "\n")
+        }
+    }
 
     @ToString
     private static class Exercise {
