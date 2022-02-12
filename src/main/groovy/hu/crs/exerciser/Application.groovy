@@ -15,7 +15,7 @@ class Application {
             exercises << exercise()
         }
 
-        toCsv(new File("build/tmp/exercises.csv"), exercises)
+        exportToCsv(new File("build/tmp/exercises.csv"), exercises)
     }
 
     private static Exercise exercise() {
@@ -46,7 +46,7 @@ class Application {
         return new Exercise(expressions: expressions, possibleResults: possibleResults)
     }
 
-    static void toCsv(File file, List<Exercise> exercises) {
+    static void exportToCsv(File file, List<Exercise> exercises) {
         file.write("")
         String line = ""
         exercises[0].expressions.size().times { i ->
